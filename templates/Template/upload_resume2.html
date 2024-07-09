@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Parser</title>
+</head>
+<body>
+    <h1>Resume Parser</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="resume" accept=".pdf,.docx,.jpg,.jpeg,.png">
+        <input type="submit" value="Upload and Analyze">
+    </form>
+
+    {% if extracted_data %}
+        <h2>Extracted Data:</h2>
+        <ul>
+            <li><strong>Name:</strong> {{ extracted_data.name }}</li>
+            <li><strong>Contact Number:</strong> {{ extracted_data.contact_number }}</li>
+            <li><strong>Email:</strong> {{ extracted_data.email }}</li>
+            <li><strong>Skills:</strong>
+                <ul>
+                    {% for skill in extracted_data.skills %}
+                        <li>{{ skill }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li><strong>Education:</strong>
+                <ul>
+                    {% for education in extracted_data.education %}
+                        <li>{{ education }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li><strong>Work Experience:</strong>
+                <ul>
+                    {% for experience in extracted_data.work_experience %}
+                        <li>{{ experience }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li><strong>Address:</strong>
+                <ul>
+                    {% if extracted_data.address %}
+                        <li>Main Component: {{ extracted_data.address.address }}</li>
+                        <li>Pincode: {{ extracted_data.address.pincode }}</li>
+                        <li>City: {{ extracted_data.address.city }}</li>
+                    {% else %}
+                        <li>No address found</li>
+                    {% endif %}
+                </ul>
+            </li>
+        </ul>
+    {% endif %}
+</body>
+</html>

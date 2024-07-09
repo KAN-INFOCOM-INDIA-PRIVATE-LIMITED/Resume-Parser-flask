@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Details</title>
+</head>
+<body>
+    <h1>Resume Details</h1>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <input type="file" name="resume" accept=".pdf">
+        <input type="submit" value="Upload and Analyze">
+    </form>
+    
+    {% if extracted_data %}
+    <h2>Extracted Data:</h2>
+    <p>Name: {{ extracted_data.name }}</p>
+    <p>Contact Number: {{ extracted_data.contact_number }}</p>
+    <p>Email: {{ extracted_data.email }}</p>
+    <p>Skills:</p>
+    <ul>
+        {% for skill in extracted_data.skills %}
+        <li>{{ skill }}</li>
+        {% endfor %}
+    </ul>
+    <p>Address:</p>
+    {% if extracted_data.address %}
+    <p>City: {{ extracted_data.address.city }}</p>
+    <p>Pincode: {{ extracted_data.address.pincode }}</p>
+    <p>Full Address: {{ extracted_data.address }}</p>
+    {% else %}
+    <p>No address found.</p>
+    {% endif %}
+    <p>Education:</p>
+    <ul>
+        {% for education in extracted_data.education %}
+        <li>{{ education }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <hr>
+
+    <h2>Update Details</h2>
+    <form action="/update" method="post">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" value="{{ extracted_data.name }}"><br><br>
+        
+        <label for="contact_number">Contact Number:</label><br>
+        <input type="text" id="contact_number" name="contact_number" value="{{ extracted_data.contact_number }}"><br><br>
+        
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" value="{{ extracted_data.email }}"><br><br>
+        
+        <label for="skills">Skills:</label><br>
+        <textarea id="skills" name="skills" rows="4" cols="50">{% for skill in extracted_data.skills %}{{ skill }}{% if not loop.last %}, {% endif %}{% endfor %}</textarea><br><br>
+        
+        <label for="address">Address:</label><br>
+        <textarea id="address" name="address" rows="4" cols="50">{{ extracted_data.address.address }}</textarea><br><br>
+        
+        <label for="education">Education:</label><br>
+        <textarea id="education" name="education" rows="4" cols="50">{% for education in extracted_data.education %}{{ education }}{% if not loop.last %}, {% endif %}{% endfor %}</textarea><br><br>
+        
+        <input type="submit" value="Update Details">
+    </form>
+</body>
+</html>

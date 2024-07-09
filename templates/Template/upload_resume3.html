@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Parsing Application</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+        body {
+            background: #67B26F;
+            background: -webkit-linear-gradient(to right, #4ca2cd, #67B26F);
+            background: linear-gradient(to right, #4ca2cd, #67B26F);
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <div class="card">
+                    <div class="card-body">
+                        <h2>Resume Parsing Application</h2>
+                        <form method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="resume">Upload Resume (PDF, DOCX, JPG, JPEG, PNG)</label>
+                                <input type="file" class="form-control" name="resume" accept=".pdf,.docx,.jpg,.jpeg,.png" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Upload and Analyze</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if extracted_data %}
+            <div class="row justify-content-center mt-5">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2>Extracted Data</h2>
+                            <ul class="list-group">
+                                <li class="list-group-item"><strong>Name:</strong> {{ extracted_data.name }}</li>
+                                <li class="list-group-item"><strong>Contact Number:</strong> {{ extracted_data.contact_number }}</li>
+                                <li class="list-group-item"><strong>Email:</strong> {{ extracted_data.email }}</li>
+                                <li class="list-group-item">
+                                    <strong>Skills:</strong>
+                                    <ul class="list-group">
+                                        {% for skill in extracted_data.skills %}
+                                            <li class="list-group-item">{{ skill }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Education:</strong>
+                                    <ul class="list-group">
+                                        {% for education in extracted_data.education %}
+                                            <li class="list-group-item">{{ education }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Work Experience:</strong>
+                                    <ul class="list-group">
+                                        {% for experience in extracted_data.work_experience %}
+                                            <li class="list-group-item">{{ experience }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Address:</strong>
+                                    {% if extracted_data.address %}
+                                        <ul class="list-group">
+                                            <li class="list-group-item">Main Component: {{ extracted_data.address.address }}</li>
+                                            <li class="list-group-item">Pincode: {{ extracted_data.address.pincode }}</li>
+                                            <li class="list-group-item">City: {{ extracted_data.address.city }}</li>
+                                        </ul>
+                                    {% else %}
+                                        <p>No address found</p>
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
